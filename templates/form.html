@@ -1,0 +1,15 @@
+{% extends 'home.html' %}
+
+{% block content_home %}
+    <form method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+    {% if products %}
+        You ordered on {{ products_price }}:<br>
+        {% for product in products %}
+            {% include 'product.html' %}
+        {% endfor %}
+        <br><br><a href="{% url 'cart' %}">Back to cart</a>
+    {% endif %}
+{% endblock %}

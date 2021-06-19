@@ -1,0 +1,62 @@
+{% load staticfiles %}
+<html lang="ru">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{% static 'css/main.css' %}" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+	</head>
+    <body>
+
+    {% block content %}
+    {% endblock %}
+
+    <div id="productView" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="productView-img" src="" class="modal-field" style="width:250px;height:200px"><br><br>
+            <span class="w3-tag w3-blue">
+                <p id="productView-category" class="modal-field"></p>
+            </span> <p id="productView-name" class="modal-field"></p><br>
+            Description: <p id="productView-description" class="modal-field"></p><br>
+            Price: <p id="productView-price" class="modal-field"></p><br>
+            Amount: <p id="productView-amount" class="modal-field"></p><br>
+            <button onclick="">Add to Cart</button>
+        </div>
+    </div>
+
+	</body>
+    <script>
+        function add_to_cart(item){
+            $.ajax({
+                url: "/cart/add",
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    item: item
+                },
+                success: function(){
+                    var cart_amount = $('#cart_items_amount');
+                    cart_amount.html(parseInt(cart_amount.html()) + 1);
+                    alert('success add to cart');
+                }
+            });
+        }
+        function remove_from_cart(item){
+            $.ajax({
+                url: "/cart/remove",
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    item: item
+                },
+                success: function(){
+                    alert('success remove from cart');
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</html>
